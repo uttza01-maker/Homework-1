@@ -131,10 +131,54 @@
   @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 
   footer{text-align:center;color:var(--chalk-dim);font-size:0.75rem;margin-top:1rem;letter-spacing:0.04em;}
+
+  /* ---------- access lock screen ---------- */
+  #lock-screen{
+    position:fixed;inset:0;z-index:100;background:var(--bg);
+    display:flex;align-items:center;justify-content:center;padding:1.25rem;
+  }
+  .lock-card{
+    width:100%;max-width:360px;background:var(--panel);border:1px solid var(--hairline);
+    border-radius:6px;padding:2rem 1.75rem;text-align:center;
+    box-shadow:0 12px 30px rgba(0,0,0,0.45);
+  }
+  .lock-icon{
+    width:44px;height:44px;margin:0 auto 1rem;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #e8dcc0, var(--brass) 55%, #6e4f22 100%);
+    display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#1c1a17;
+  }
+  .lock-title{font-family:'Kanit',sans-serif;font-size:1.05rem;color:var(--chalk);margin-bottom:0.3rem;}
+  .lock-sub{font-size:0.82rem;color:var(--chalk-dim);margin-bottom:1.4rem;}
+  .lock-card input{
+    width:100%;background:var(--bg);border:1px solid var(--hairline);color:var(--chalk);
+    padding:0.75rem 0.9rem;border-radius:3px;font-family:'JetBrains Mono',monospace;
+    font-size:0.95rem;letter-spacing:0.08em;text-align:center;margin-bottom:0.9rem;
+  }
+  .lock-card input:focus{outline:none;border-color:var(--brass);}
+  .lock-card button{
+    width:100%;background:var(--brass);color:#1c1a17;font-weight:600;
+    font-family:'Kanit',sans-serif;letter-spacing:0.06em;text-transform:uppercase;
+    font-size:0.9rem;padding:0.8rem;border:none;border-radius:3px;cursor:pointer;
+  }
+  .lock-card button:hover{background:var(--amber);}
+  .lock-msg{font-size:0.8rem;color:var(--rust);margin-top:0.8rem;min-height:1rem;}
+  #app-root{display:none;}
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<div id="lock-screen">
+  <div class="lock-card">
+    <div class="lock-icon">🔒</div>
+    <div class="lock-title font-display">เข้าสู่ระบบ NEO-FIX</div>
+    <div class="lock-sub">กรอกรหัสเข้าใช้งานเพื่อดำเนินการต่อ</div>
+    <input id="access-code" type="password" placeholder="รหัสเข้าใช้งาน" autocomplete="off">
+    <button onclick="checkAccessCode()">ปลดล็อก</button>
+    <div class="lock-msg" id="lock-msg"></div>
+  </div>
+</div>
+
+<div class="wrap" id="app-root">
 
   <div class="plate">
     <div class="plate-bolt"></div>
@@ -564,12 +608,32 @@
     }
   }
 
-  window.onload = () => {
-    loadAssets();
-    loadTickets();
-    loadLogs();
-    loadUsers();
-  };
+  const ACCESS_CODE = 'dtiadminsau';
+
+  function checkAccessCode(){
+    const input = document.getElementById('access-code');
+    const msgEl = document.getElementById('lock-msg');
+    if (input.value === ACCESS_CODE){
+      document.getElementById('lock-screen').style.display = 'none';
+      document.getElementById('app-root').style.display = 'block';
+      loadAssets();
+      loadTickets();
+      loadLogs();
+      loadUsers();
+    } else {
+      msgEl.textContent = 'รหัสไม่ถูกต้อง กรุณาลองใหม่';
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('access-code');
+    input.focus();
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') checkAccessCode();
+    });
+  });
 </script>
 </body>
 </html>

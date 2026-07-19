@@ -132,52 +132,178 @@
 
   footer{text-align:center;color:var(--chalk-dim);font-size:0.75rem;margin-top:1rem;letter-spacing:0.04em;}
 
-  /* ---------- access lock screen ---------- */
-  #lock-screen{
+  /* ---------- full-screen overlay screens (role select / auth) ---------- */
+  .screen{
     position:fixed;inset:0;z-index:100;background:var(--bg);
     display:flex;align-items:center;justify-content:center;padding:1.25rem;
+    overflow-y:auto;
   }
-  .lock-card{
-    width:100%;max-width:360px;background:var(--panel);border:1px solid var(--hairline);
+
+  /* ---------- role selection ---------- */
+  .role-wrap{width:100%;max-width:640px;text-align:center;padding:2rem 0;}
+  .role-eyebrow{justify-content:center;display:flex;}
+  .role-title{font-size:2.1rem;color:var(--chalk);margin:0.15rem 0 0.4rem;}
+  .role-sub{color:var(--chalk-dim);font-size:0.9rem;margin-bottom:2rem;}
+  .role-options{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;}
+  @media (max-width:560px){.role-options{grid-template-columns:1fr;}}
+  .role-card{background:var(--panel);border:1px solid var(--hairline);border-radius:6px;padding:1.85rem 1.35rem;cursor:pointer;transition:border-color .15s ease, transform .1s ease, box-shadow .15s ease;text-align:center;}
+  .role-card:hover{border-color:var(--brass);transform:translateY(-2px);box-shadow:0 10px 24px rgba(0,0,0,0.35);}
+  .role-icon{width:44px;height:44px;margin:0 auto 0.9rem;border-radius:50%;background:radial-gradient(circle at 35% 30%, #e8dcc0, var(--brass) 55%, #6e4f22 100%);display:flex;align-items:center;justify-content:center;font-size:1.15rem;color:#1c1a17;}
+  .role-card h3{font-size:1.05rem;margin:0 0 0.45rem;color:var(--chalk);}
+  .role-card p{color:var(--chalk-dim);font-size:0.8rem;margin:0;line-height:1.55;}
+
+  /* ---------- auth cards (admin lock + reporter login/register) ---------- */
+  .auth-card{
+    width:100%;max-width:380px;background:var(--panel);border:1px solid var(--hairline);
     border-radius:6px;padding:2rem 1.75rem;text-align:center;
     box-shadow:0 12px 30px rgba(0,0,0,0.45);
   }
-  .lock-icon{
-    width:44px;height:44px;margin:0 auto 1rem;border-radius:50%;
-    background:radial-gradient(circle at 35% 30%, #e8dcc0, var(--brass) 55%, #6e4f22 100%);
-    display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#1c1a17;
-  }
-  .lock-title{font-family:'Kanit',sans-serif;font-size:1.05rem;color:var(--chalk);margin-bottom:0.3rem;}
-  .lock-sub{font-size:0.82rem;color:var(--chalk-dim);margin-bottom:1.4rem;}
-  .lock-card input{
+  .back-link{display:inline-flex;align-items:center;gap:0.3rem;background:none;border:none;color:var(--chalk-dim);font-size:0.8rem;cursor:pointer;margin-bottom:1.1rem;padding:0;}
+  .back-link:hover{color:var(--amber);}
+  .auth-icon{width:44px;height:44px;margin:0 auto 1rem;border-radius:50%;background:radial-gradient(circle at 35% 30%, #e8dcc0, var(--brass) 55%, #6e4f22 100%);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#1c1a17;}
+  .auth-title{font-size:1.05rem;color:var(--chalk);margin-bottom:0.3rem;}
+  .auth-sub{font-size:0.82rem;color:var(--chalk-dim);margin-bottom:1.4rem;}
+  .auth-card input{
     width:100%;background:var(--bg);border:1px solid var(--hairline);color:var(--chalk);
     padding:0.75rem 0.9rem;border-radius:3px;font-family:'JetBrains Mono',monospace;
-    font-size:0.95rem;letter-spacing:0.08em;text-align:center;margin-bottom:0.9rem;
+    font-size:0.95rem;letter-spacing:0.04em;text-align:center;margin-bottom:0.9rem;
   }
-  .lock-card input:focus{outline:none;border-color:var(--brass);}
-  .lock-card button{
+  .auth-card input:focus{outline:none;border-color:var(--brass);}
+  .auth-card button.primary{
     width:100%;background:var(--brass);color:#1c1a17;font-weight:600;
     font-family:'Kanit',sans-serif;letter-spacing:0.06em;text-transform:uppercase;
     font-size:0.9rem;padding:0.8rem;border:none;border-radius:3px;cursor:pointer;
   }
-  .lock-card button:hover{background:var(--amber);}
-  .lock-msg{font-size:0.8rem;color:var(--rust);margin-top:0.8rem;min-height:1rem;}
-  #app-root{display:none;}
+  .auth-card button.primary:hover{background:var(--amber);}
+  .auth-msg{font-size:0.8rem;color:var(--rust);margin-top:0.8rem;min-height:1rem;}
+  .auth-msg.ok{color:var(--moss);}
+
+  .auth-tabs{display:flex;gap:0.4rem;margin-bottom:1.4rem;background:var(--panel-2);border-radius:4px;padding:0.3rem;}
+  .auth-tab{flex:1;background:none;border:none;color:var(--chalk-dim);font-family:'Kanit',sans-serif;font-size:0.85rem;letter-spacing:0.03em;padding:0.55rem;border-radius:3px;cursor:pointer;}
+  .auth-tab.active{background:var(--panel);color:var(--amber);box-shadow:inset 0 0 0 1px rgba(232,163,61,0.2);}
+  .auth-field{text-align:left;margin-bottom:0.9rem;}
+  .auth-field label{display:block;font-size:0.75rem;color:var(--chalk-dim);margin-bottom:0.35rem;}
+  .auth-field input{margin-bottom:0;text-align:left;letter-spacing:normal;font-family:'Sarabun',sans-serif;}
+
+  /* ---------- reporter dashboard ---------- */
+  .reporter-topbar{display:flex;align-items:flex-end;justify-content:space-between;padding:2.25rem 0 1.5rem;flex-wrap:wrap;gap:1rem;}
+  .reporter-who{font-size:0.85rem;color:var(--chalk-dim);text-align:right;}
+  .reporter-who b{color:var(--chalk);}
+  .reporter-dept{display:block;font-size:0.72rem;color:var(--brass);margin-top:0.15rem;}
+  .logout-btn{background:none;border:1px solid var(--hairline);color:var(--chalk-dim);padding:0.5rem 0.9rem;border-radius:3px;cursor:pointer;font-size:0.78rem;margin-top:0.5rem;}
+  .logout-btn:hover{border-color:var(--rust);color:var(--rust);}
+
+  #app-root, #reporter-root{display:none;}
 </style>
 </head>
 <body>
 
-<div id="lock-screen">
-  <div class="lock-card">
-    <div class="lock-icon">🔒</div>
-    <div class="lock-title font-display">เข้าสู่ระบบ NEO-FIX</div>
-    <div class="lock-sub">กรอกรหัสเข้าใช้งานเพื่อดำเนินการต่อ</div>
-    <input id="access-code" type="password" placeholder="รหัสเข้าใช้งาน" autocomplete="off">
-    <button onclick="checkAccessCode()">ปลดล็อก</button>
-    <div class="lock-msg" id="lock-msg"></div>
+<!-- ============== 1) ROLE SELECTION ============== -->
+<div class="screen" id="role-screen">
+  <div class="role-wrap">
+    <div class="eyebrow role-eyebrow">ศูนย์ควบคุมงานซ่อมบำรุง</div>
+    <h1 class="role-title font-display">NEO-FIX</h1>
+    <div class="role-sub">เลือกประเภทผู้ใช้งานเพื่อเข้าสู่ระบบ</div>
+    <div class="role-options">
+      <div class="role-card" onclick="showScreen('reporter-auth-screen')">
+        <div class="role-icon">🛠️</div>
+        <h3 class="font-display">แจ้งซ่อม</h3>
+        <p>สำหรับพนักงานทั่วไปที่ต้องการแจ้งปัญหาอุปกรณ์ และติดตามสถานะงานของตนเอง</p>
+      </div>
+      <div class="role-card" onclick="showScreen('admin-lock-screen')">
+        <div class="role-icon">🔧</div>
+        <h3 class="font-display">เจ้าหน้าที่ดูแลระบบ</h3>
+        <p>สำหรับผู้ดูแลระบบ จัดการอุปกรณ์ ใบงาน ประวัติ และผู้ใช้งานทั้งหมด</p>
+      </div>
+    </div>
   </div>
 </div>
 
+<!-- ============== 2) ADMIN ACCESS CODE ============== -->
+<div class="screen hidden" id="admin-lock-screen">
+  <div class="auth-card">
+    <button class="back-link" onclick="showScreen('role-screen')">‹ กลับ</button>
+    <div class="auth-icon">🔒</div>
+    <div class="auth-title font-display">เข้าสู่ระบบเจ้าหน้าที่</div>
+    <div class="auth-sub">กรอกรหัสเข้าใช้งานเพื่อดำเนินการต่อ</div>
+    <input id="access-code" type="password" placeholder="รหัสเข้าใช้งาน" autocomplete="off">
+    <button class="primary" onclick="checkAccessCode()">ปลดล็อก</button>
+    <div class="auth-msg" id="lock-msg"></div>
+  </div>
+</div>
+
+<!-- ============== 3) REPORTER LOGIN / REGISTER ============== -->
+<div class="screen hidden" id="reporter-auth-screen">
+  <div class="auth-card">
+    <button class="back-link" onclick="showScreen('role-screen')">‹ กลับ</button>
+    <div class="auth-icon">🛠️</div>
+    <div class="auth-title font-display">ระบบแจ้งซ่อม</div>
+    <div class="auth-sub">เข้าสู่ระบบหรือลงทะเบียนเพื่อแจ้งซ่อมอุปกรณ์</div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">เข้าสู่ระบบ</button>
+      <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">ลงทะเบียน</button>
+    </div>
+
+    <div id="login-form">
+      <div class="auth-field"><label for="loginUsername">ชื่อผู้ใช้</label><input id="loginUsername" placeholder="ชื่อผู้ใช้" autocomplete="off"></div>
+      <div class="auth-field"><label for="loginPassword">รหัสผ่าน</label><input id="loginPassword" type="password" placeholder="รหัสผ่าน" autocomplete="off"></div>
+      <button class="primary" onclick="handleLogin()">เข้าสู่ระบบ</button>
+      <div class="auth-msg" id="login-msg"></div>
+    </div>
+
+    <div id="register-form" class="hidden">
+      <div class="auth-field"><label for="regFullName">ชื่อ-นามสกุล</label><input id="regFullName" placeholder="ชื่อ-นามสกุล" autocomplete="off"></div>
+      <div class="auth-field"><label for="regDept">แผนก</label><input id="regDept" placeholder="เช่น บัญชี, การตลาด" autocomplete="off"></div>
+      <div class="auth-field"><label for="regUsername">ชื่อผู้ใช้</label><input id="regUsername" placeholder="ตั้งชื่อผู้ใช้" autocomplete="off"></div>
+      <div class="auth-field"><label for="regPassword">รหัสผ่าน</label><input id="regPassword" type="password" placeholder="อย่างน้อย 6 ตัวอักษร" autocomplete="off"></div>
+      <button class="primary" onclick="handleRegister()">ลงทะเบียน</button>
+      <div class="auth-msg" id="register-msg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============== 4) REPORTER DASHBOARD ============== -->
+<div class="wrap" id="reporter-root">
+  <div class="reporter-topbar">
+    <div>
+      <div class="eyebrow">ระบบแจ้งซ่อม</div>
+      <h1 class="brand font-display" style="font-size:1.7rem;">NEO-FIX</h1>
+    </div>
+    <div class="reporter-who">
+      สวัสดี, <b id="reporter-name-label"></b>
+      <span class="reporter-dept" id="reporter-dept-label"></span>
+      <button class="logout-btn" onclick="reporterLogout()">ออกจากระบบ</button>
+    </div>
+  </div>
+
+  <div class="job-card">
+    <div class="job-card-head"><span class="label">ใบแจ้งซ่อม</span><span class="next-id font-mono" id="reporter-next-ticket-id">T-xxxxxxxxxxxxx</span></div>
+    <div class="perforation"></div>
+    <div class="job-card-body">
+      <div class="field">
+        <label for="reporterAssetSelect">เลือกอุปกรณ์</label>
+        <select id="reporterAssetSelect" onchange="toggleReporterAssetCustom()">
+          <option value="">-- เลือกอุปกรณ์ --</option>
+        </select>
+      </div>
+      <div class="field hidden" id="reporterAssetCustomWrap">
+        <label for="reporterAssetCustom">ระบุชื่ออุปกรณ์/สถานที่เอง</label>
+        <input id="reporterAssetCustom" placeholder="เช่น เครื่องปริ้นเตอร์ ชั้น 3 ห้องบัญชี" autocomplete="off">
+      </div>
+      <div class="field"><label for="reporterIssueDetail">รายละเอียดปัญหา</label><textarea id="reporterIssueDetail" rows="3" placeholder="อธิบายอาการที่พบ..."></textarea></div>
+      <button class="submit-btn" onclick="submitReporterTicket()">ส่งใบแจ้งซ่อม</button>
+      <div class="form-msg" id="reporter-ticket-msg"></div>
+    </div>
+  </div>
+
+  <div class="section-head"><h2 class="font-display">ใบงานของฉัน</h2><span class="count-pill" id="reporter-tickets-count"></span></div>
+  <div class="board" id="reporter-tickets-board"><div class="skel-tag"></div><div class="skel-tag"></div><div class="skel-tag"></div></div>
+
+  <footer>NEO-FIX &middot; Asset Command Center</footer>
+</div>
+
+<!-- ============== 5) ADMIN DASHBOARD (unchanged) ============== -->
 <div class="wrap" id="app-root">
 
   <div class="plate">
@@ -186,6 +312,9 @@
       <div class="eyebrow">ศูนย์ควบคุมงานซ่อมบำรุง</div>
       <h1 class="brand font-display">NEO-FIX</h1>
       <div class="brand-sub">แจ้งซ่อม ติดตามอุปกรณ์ ประวัติงาน และผู้ใช้งาน ในที่เดียว</div>
+    </div>
+    <div style="margin-left:auto;">
+      <button class="logout-btn" onclick="adminLogout()">ออกจากระบบ</button>
     </div>
   </div>
 
@@ -255,7 +384,7 @@
       <div class="perforation"></div>
       <div class="job-card-body">
         <div class="field-row">
-          <div class="field"><label for="reporterId">รหัสผู้แจ้ง</label><input id="reporterId" placeholder="เช่น EMP-014" autocomplete="off"></div>
+          <div class="field"><label for="reporterId">รหัสผู้แจ้ง</label><input id="reporterId" placeholder="เช่น U-1699999999" autocomplete="off"></div>
           <div class="field"><label for="assetId">รหัสอุปกรณ์</label><input id="assetId" placeholder="เช่น A-1699999999" autocomplete="off"></div>
         </div>
         <div class="field"><label for="issueDetail">รายละเอียดปัญหา</label><textarea id="issueDetail" rows="3" placeholder="อธิบายอาการที่พบ..."></textarea></div>
@@ -280,7 +409,7 @@
 
   <section class="page hidden" id="page-users">
     <div class="job-card" id="users-form-card">
-      <div class="job-card-head"><span class="label">ใบเพิ่มผู้ใช้งาน</span><span class="next-id font-mono">U-xxxxxxxxxxxxx</span></div>
+      <div class="job-card-head"><span class="label">ใบเพิ่มผู้ใช้งาน (ทีมงาน/ช่าง)</span><span class="next-id font-mono">U-xxxxxxxxxxxxx</span></div>
       <div class="perforation"></div>
       <div class="job-card-body">
         <div class="field-row">
@@ -303,6 +432,9 @@
 <script>
   // เปลี่ยนลิงก์นี้ให้เป็นลิงก์ Deploy ของคุณ!
   const API_URL = "https://script.google.com/macros/s/AKfycbyMsqDX4ziK-9sLN-iyATqZELVgXptM8b9eSOMr0RMBEXrq3EFFfek2OsLC1UZTsylDvw/exec";
+  const ACCESS_CODE = 'dtiadminsau';
+
+  let currentReporter = null; // { UserID, UserName, Username, Department, Role }
 
   function escapeHtml(str){
     const div = document.createElement('div');
@@ -323,9 +455,47 @@
     return res.json();
   }
 
+  async function apiGetReporterTickets(reporterId){
+    const res = await fetch(`${API_URL}?sheet=Tickets&reporterId=${encodeURIComponent(reporterId)}`);
+    if (!res.ok) throw new Error('bad response');
+    return res.json();
+  }
+
   async function apiPost(body){
     const res = await fetch(API_URL, { method:'POST', body: JSON.stringify(body) });
     return res.json().catch(() => ({ status:'success' }));
+  }
+
+  // ---------------------------------------------------------------
+  // Screen navigation
+  // ---------------------------------------------------------------
+  const OVERLAY_SCREENS = ['role-screen', 'admin-lock-screen', 'reporter-auth-screen'];
+  const APP_SCREENS = ['app-root', 'reporter-root'];
+
+  function showScreen(id){
+    OVERLAY_SCREENS.forEach(s => document.getElementById(s).classList.toggle('hidden', s !== id));
+    APP_SCREENS.forEach(s => {
+      document.getElementById(s).style.display = (s === id) ? 'block' : 'none';
+    });
+
+    if (id === 'admin-lock-screen'){
+      document.getElementById('lock-msg').textContent = '';
+      document.getElementById('access-code').value = '';
+      setTimeout(() => document.getElementById('access-code').focus(), 50);
+    }
+    if (id === 'reporter-auth-screen'){
+      switchAuthTab('login');
+      setTimeout(() => document.getElementById('loginUsername').focus(), 50);
+    }
+  }
+
+  function switchAuthTab(tab){
+    document.getElementById('tab-login').classList.toggle('active', tab === 'login');
+    document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+    document.getElementById('login-form').classList.toggle('hidden', tab !== 'login');
+    document.getElementById('register-form').classList.toggle('hidden', tab !== 'register');
+    document.getElementById('login-msg').textContent = '';
+    document.getElementById('register-msg').textContent = '';
   }
 
   function toggleDropdown(name){
@@ -388,6 +558,9 @@
     return `<div class="error-state full"><div class="big">โหลดข้อมูลไม่สำเร็จ</div><div>ตรวจสอบการเชื่อมต่อหรือลิงก์ API แล้วลองใหม่อีกครั้ง</div><button class="retry-btn" onclick="${retryFn}()">ลองอีกครั้ง</button></div>`;
   }
 
+  // ---------------------------------------------------------------
+  // Admin dashboard (Assets / Tickets / Logs / Users)
+  // ---------------------------------------------------------------
   async function loadAssets(){
     const board = document.getElementById('assets-board');
     try {
@@ -453,7 +626,7 @@
         <div class="tag">
           <div class="tag-hole"></div>
           <span class="tag-id">${escapeHtml(t.TicketID)}</span>
-          <div class="tag-meta">อุปกรณ์: ${orNA(t.AssetID)}</div>
+          <div class="tag-meta">ผู้แจ้ง: ${orNA(t.ReporterID)} · อุปกรณ์: ${orNA(t.AssetID)}</div>
           <div class="tag-detail">${orNA(t.IssueDetail)}</div>
           ${stampHtml(t.Status)}
           <details class="flap">
@@ -608,14 +781,11 @@
     }
   }
 
-  const ACCESS_CODE = 'dtiadminsau';
-
   function checkAccessCode(){
     const input = document.getElementById('access-code');
     const msgEl = document.getElementById('lock-msg');
     if (input.value === ACCESS_CODE){
-      document.getElementById('lock-screen').style.display = 'none';
-      document.getElementById('app-root').style.display = 'block';
+      showScreen('app-root');
       loadAssets();
       loadTickets();
       loadLogs();
@@ -627,11 +797,173 @@
     }
   }
 
+  function adminLogout(){
+    showScreen('role-screen');
+  }
+
+  // ---------------------------------------------------------------
+  // Reporter auth (register / login)
+  // ---------------------------------------------------------------
+  async function handleLogin(){
+    const Username = document.getElementById('loginUsername').value.trim();
+    const Password = document.getElementById('loginPassword').value;
+    const msgEl = document.getElementById('login-msg');
+    if (!Username || !Password){
+      msgEl.textContent = 'กรุณากรอกชื่อผู้ใช้และรหัสผ่าน'; msgEl.className = 'auth-msg err'; return;
+    }
+    msgEl.textContent = 'กำลังเข้าสู่ระบบ...'; msgEl.className = 'auth-msg';
+    try {
+      const resp = await apiPost({ action:'loginUser', Username, Password });
+      if (resp.status === 'error'){
+        msgEl.textContent = resp.message || 'เข้าสู่ระบบไม่สำเร็จ'; msgEl.className = 'auth-msg err';
+        return;
+      }
+      currentReporter = resp.user;
+      document.getElementById('loginPassword').value = '';
+      msgEl.textContent = '';
+      enterReporterDashboard();
+    } catch (err){
+      console.error(err);
+      msgEl.textContent = 'เชื่อมต่อไม่สำเร็จ กรุณาลองใหม่'; msgEl.className = 'auth-msg err';
+    }
+  }
+
+  async function handleRegister(){
+    const UserName = document.getElementById('regFullName').value.trim();
+    const Department = document.getElementById('regDept').value.trim();
+    const Username = document.getElementById('regUsername').value.trim();
+    const Password = document.getElementById('regPassword').value;
+    const msgEl = document.getElementById('register-msg');
+
+    if (!UserName || !Department || !Username || !Password){
+      msgEl.textContent = 'กรุณากรอกข้อมูลให้ครบทุกช่อง'; msgEl.className = 'auth-msg err'; return;
+    }
+    if (Password.length < 6){
+      msgEl.textContent = 'รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร'; msgEl.className = 'auth-msg err'; return;
+    }
+    msgEl.textContent = 'กำลังลงทะเบียน...'; msgEl.className = 'auth-msg';
+    try {
+      const resp = await apiPost({ action:'registerUser', UserName, Department, Username, Password });
+      if (resp.status === 'error'){
+        msgEl.textContent = resp.message || 'ลงทะเบียนไม่สำเร็จ'; msgEl.className = 'auth-msg err';
+        return;
+      }
+      currentReporter = resp.user;
+      document.getElementById('regPassword').value = '';
+      msgEl.textContent = '';
+      enterReporterDashboard();
+    } catch (err){
+      console.error(err);
+      msgEl.textContent = 'เชื่อมต่อไม่สำเร็จ กรุณาลองใหม่'; msgEl.className = 'auth-msg err';
+    }
+  }
+
+  function reporterLogout(){
+    currentReporter = null;
+    document.getElementById('loginUsername').value = '';
+    document.getElementById('loginPassword').value = '';
+    showScreen('role-screen');
+  }
+
+  // ---------------------------------------------------------------
+  // Reporter dashboard
+  // ---------------------------------------------------------------
+  function enterReporterDashboard(){
+    document.getElementById('reporter-name-label').textContent = currentReporter.UserName;
+    document.getElementById('reporter-dept-label').textContent = currentReporter.Department || '';
+    showScreen('reporter-root');
+    loadReporterAssetOptions();
+    loadReporterTickets();
+  }
+
+  async function loadReporterAssetOptions(){
+    const sel = document.getElementById('reporterAssetSelect');
+    try {
+      const json = await apiGet('Assets');
+      const assets = json.data || [];
+      sel.innerHTML = '<option value="">-- เลือกอุปกรณ์ --</option>' +
+        assets.map(a => `<option value="${escapeHtml(a.AssetID)}">${escapeHtml(a.AssetID)} — ${escapeHtml(a.AssetName)}</option>`).join('') +
+        '<option value="__custom__">＋ ไม่พบในรายการ / พิมพ์เอง</option>';
+    } catch (err){
+      console.error(err);
+      sel.innerHTML = '<option value="">โหลดรายการอุปกรณ์ไม่สำเร็จ</option>' +
+        '<option value="__custom__">＋ ไม่พบในรายการ / พิมพ์เอง</option>';
+    }
+  }
+
+  function toggleReporterAssetCustom(){
+    const isCustom = document.getElementById('reporterAssetSelect').value === '__custom__';
+    document.getElementById('reporterAssetCustomWrap').classList.toggle('hidden', !isCustom);
+    if (isCustom) document.getElementById('reporterAssetCustom').focus();
+  }
+
+  async function submitReporterTicket(){
+    const selectVal = document.getElementById('reporterAssetSelect').value;
+    const AssetID = selectVal === '__custom__'
+      ? document.getElementById('reporterAssetCustom').value.trim()
+      : selectVal;
+    const IssueDetail = document.getElementById('reporterIssueDetail').value.trim();
+    const msgEl = document.getElementById('reporter-ticket-msg');
+
+    if (!AssetID || !IssueDetail){
+      msgEl.textContent = 'กรุณาเลือกหรือระบุอุปกรณ์ และกรอกรายละเอียดปัญหา'; msgEl.className = 'form-msg err'; return;
+    }
+    if (!currentReporter){
+      msgEl.textContent = 'กรุณาเข้าสู่ระบบใหม่อีกครั้ง'; msgEl.className = 'form-msg err'; return;
+    }
+    msgEl.textContent = ''; msgEl.className = 'form-msg';
+    try {
+      await apiPost({ action:'createTicket', ReporterID: currentReporter.UserID, AssetID, IssueDetail });
+      msgEl.textContent = 'ส่งใบแจ้งซ่อมสำเร็จ'; msgEl.className = 'form-msg ok';
+      document.getElementById('reporterIssueDetail').value = '';
+      document.getElementById('reporterAssetSelect').value = '';
+      document.getElementById('reporterAssetCustom').value = '';
+      document.getElementById('reporterAssetCustomWrap').classList.add('hidden');
+      await loadReporterTickets();
+    } catch (err){
+      console.error(err);
+      msgEl.textContent = 'ส่งข้อมูลไม่สำเร็จ กรุณาลองใหม่'; msgEl.className = 'form-msg err';
+    }
+  }
+
+  async function loadReporterTickets(){
+    const board = document.getElementById('reporter-tickets-board');
+    document.getElementById('reporter-next-ticket-id').textContent = 'T-' + Date.now();
+    if (!currentReporter) return;
+    try {
+      const json = await apiGetReporterTickets(currentReporter.UserID);
+      const tickets = json.data || [];
+      document.getElementById('reporter-tickets-count').textContent = tickets.length ? tickets.length + ' รายการ' : '';
+      if (!tickets.length){
+        board.innerHTML = emptyStateHtml('ยังไม่มีใบงานของคุณ', 'ส่งใบแจ้งซ่อมแรกด้วยฟอร์มด้านบน');
+        return;
+      }
+      board.innerHTML = tickets.slice().reverse().map(t => `
+        <div class="tag">
+          <div class="tag-hole"></div>
+          <span class="tag-id">${escapeHtml(t.TicketID)}</span>
+          <div class="tag-meta">อุปกรณ์: ${orNA(t.AssetID)}</div>
+          <div class="tag-detail">${orNA(t.IssueDetail)}</div>
+          ${stampHtml(t.Status)}
+        </div>`).join('');
+    } catch (err){
+      console.error(err);
+      board.innerHTML = errorStateHtml('loadReporterTickets');
+    }
+  }
+
+  // ---------------------------------------------------------------
+  // Init
+  // ---------------------------------------------------------------
   document.addEventListener('DOMContentLoaded', () => {
-    const input = document.getElementById('access-code');
-    input.focus();
-    input.addEventListener('keydown', (e) => {
+    document.getElementById('access-code').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') checkAccessCode();
+    });
+    document.getElementById('loginPassword').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleLogin();
+    });
+    document.getElementById('regPassword').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleRegister();
     });
   });
 </script>
